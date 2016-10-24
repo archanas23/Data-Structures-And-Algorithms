@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class kim {
+
+    public static void main(String[] args) {
+    	Scanner sc= new Scanner(System.in);
+    	//System.out.println("enter the array");
+    	int[] A={1,2,3,3,5,5,5,6,6,6,7,8,9};
+    	int max=A[0];
+    	int count=1;
+    	int dup_count = 0;
+    	int max_count=count;
+    	int max_data=A[0];
+    	for(int i=1;i<A.length;i++)
+    	{
+    		if(A[i]==max)
+    		{
+    			count++;
+    			dup_count++;
+    			if(count>=max_count)
+    			{
+    				
+    				max_data=A[i];
+    				max_count=count;
+    			}
+    		}
+    		else
+    		{
+    			count=1;
+    			max=A[i];
+    		}
+    	}
+    	System.out.println(max_data);
+    	System.out.println(max_count);
+    	max=A[0];
+    	int l=0;
+    	int[] B= new int[(A.length)-dup_count];
+    	B[0]=A[0];
+    	for(int i=1;i<A.length;i++)
+    	{
+    		if(A[i]!=max)
+    		{
+    			l++;
+    			B[l]=A[i];
+    			max=A[i];
+    		}
+    		
+    	}
+    	for(int j=0;j<B.length;j++)
+    	{
+    		System.out.println(B[j]);
+    	}
+    	
+         
+    }
+     
+    }
