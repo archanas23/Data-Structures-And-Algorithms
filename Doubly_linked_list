@@ -1,0 +1,314 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define New(x) (x*)malloc(sizeof(x))
+typedef struct node{
+
+	int data;
+	struct node *next;
+	struct node *prev;
+	}Node;
+
+typedef struct root{
+	int num;
+	struct node *head;
+	struct node *tail;
+	}Root;
+
+Node* makenode(int data)
+{
+	Node *temp;
+	temp=New(Node);
+	if(temp!=NULL)	{
+	temp->data=data;
+	temp->next=NULL;
+	temp->prev=NULL;
+	}
+return temp;
+	
+}
+
+Root * makeroot(void)
+{
+	Root *temp;
+	temp=New(Root);
+	if(temp!=NULL){
+	temp->num=0;
+	temp->head=NULL;
+	temp->tail=NULL;}
+}
+
+void display(Root* r)
+{
+	Node *temp;
+	if(r!=NULL)
+	{
+	temp=r->head;
+	while(temp!=NULL)
+	{
+	 printf("data is %d\n",temp->data);
+	 temp=temp->next;
+	}
+	
+}
+}
+
+int insert_at_head(Root *this,int data)
+{
+	Node* temp;
+	if(this==NULL)
+	{
+		this=makeroot();
+		if(this==NULL)
+		{
+		return -1;
+		}
+	}
+	temp=makenode(data);
+	if(temp==NULL)
+	{
+		return -1;
+	}
+	(this->num)++;
+		
+	if(this->num==1)
+	{
+	this->tail=temp;
+	this->head=temp;
+	}
+	else{
+	temp->next=this->head;
+	this->head->prev=temp;
+	this->head=temp;
+	}
+return 0;
+}
+
+void delete(Root *r,int data)
+	{
+		Node * temp;
+		if(r==NULL){ 
+		printf("No match");
+		return;}	
+		temp=r->head;
+		if(temp->data==data)
+		{
+		r->head=temp->next;
+		r->head->prev=NULL;
+		(r->num)--;
+		free(temp);
+		}
+		else{
+		while(temp->next!=NULL && temp->next->data!=data)
+		{
+		temp=temp->next;
+		}
+		if(temp->next==NULL )
+		{ 
+			if(temp->data==data)
+			{
+			r->tail=temp;
+			(r->num)--;}
+			else{
+			printf("No\n");
+			}
+		}
+		else
+		{
+			if(temp->next->next==NULL)
+			{
+			temp->next=NULL;
+			(r->num)--;
+			}
+			else
+			{
+			temp->next->next->prev=temp;
+			temp->next=temp->next->next;
+			(r->num)--;
+			}
+		}
+	}
+}
+
+
+int insert_at_position(Root *r,int data)
+{
+	Node* temp;
+	temp=makenode(data);
+	(r->num)++;
+
+	Node* this;
+	if(r==NULL)
+	{
+	return -1;
+	}
+	this=r->head;
+	if(this->data>=data)
+	{
+		insert_at_head(r,data);
+	}
+	else if(this->data<data)
+	{
+		while((this->next!=NULL)&&(this->next->data<data))
+		{
+		this=this->next;
+		}
+		if(this->next==NULL)
+		{
+			temp->prev=this;
+			this->next=temp;
+			temp->next=NULL;
+			r->tail=temp;	
+		}
+		else
+		{
+			temp->prev=this;
+			temp->next=this->next;
+			this->next->prev=temp;
+			this->next=temp;	
+		}
+	}
+}
+
+int insert_at_tail(Root *this,int data)
+{
+	Node* temp;
+	if(this==NULL)
+	{
+		this=makeroot();
+		if(this==NULL)
+		{
+		return -1;
+		}
+	}
+	temp=makenode(data);
+	if(temp==NULL)
+	{
+		return -1;
+	}
+	(this->num)++;
+		
+	if(this->num==1)
+	{
+	this->tail=temp;
+	this->head=temp;
+	}
+	else{
+	temp->prev=this->head;
+	this->tail->next=temp;
+	this->tail=temp;
+	}
+return 0;
+}
+
+void search(Root *r,int data)
+	{
+		Node * temp;
+		
+		temp=r->head;
+		if(temp->data==data)
+		{
+		printf("found\n");
+		}
+		while(temp->next!=NULL && temp->next->data!=data)
+		{
+		temp=temp->next;
+		}
+		if(temp->next==NULL && temp->data!=data)
+		{
+		printf("no\n");
+		}
+		else
+		{
+		printf("found\n");
+		}
+	}
+
+void reverse(Root *r,Root *copy)
+{
+	Node * temp;
+	if(r!=NULL)
+	{
+	temp=r->head;
+	while(temp!=NULL)
+		{
+		insert_at_head(copy,temp->data);
+		temp=temp->next;
+		}
+	}
+}
+
+void split(Root *r,Root *start, Root *mid)
+{
+	Node*temp;
+	if(r!=NULL)
+	{
+		temp=r->head;
+		while(temp!=NULL)
+		{
+		insert_at_head(start,temp->data);
+		temp=temp->next;
+		insert_at_head(mid,temp->data);
+		temp=temp->next;
+		}
+	} 
+	
+}
+
+int main(void)
+	{
+		Node* n;
+		Root* r;
+		Root* copy;
+		Root* start;
+		Root* mid;
+		start=makeroot();
+		mid=makeroot();
+		r=makeroot();
+		copy=makeroot();
+		if(mid==NULL)
+		{
+		return -1;
+		}
+		if(start==NULL)
+		{
+		return -1;
+		}
+
+		if(copy==NULL)
+		{
+		return -1;
+		}
+		if(r==NULL)
+		{
+		return -1;
+		}
+			
+		insert_at_head(r,14);
+		insert_at_position(r,15);
+		insert_at_position(r,16);
+		insert_at_position(r,13);
+		insert_at_position(r,18);
+		insert_at_position(r,17);
+		display(r);
+		search(r,19);
+		delete(r,13);
+		printf("\n");
+		display(r);
+		printf("\n");
+		delete(r,15);
+		display(r);
+		reverse(r,copy);
+		printf("\n");
+		display(r);
+
+		printf("\n");
+		display(copy);
+		printf("\n");
+		split(r,start,mid);
+		display(start);
+		printf("\n");
+		display(mid);
+	return 0;
+	}
