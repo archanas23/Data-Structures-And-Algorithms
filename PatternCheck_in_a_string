@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+void match(char* input);
+void main()
+{
+char *input;
+char *a=malloc(2*sizeof(char));
+char *b;
+int i=0;
+printf("Enter the string \n");
+while(fgets(a,2,stdin)!=NULL)
+{
+  if((*a=='\n')||(*a=='\r'))
+  {
+   *a='\0';
+   a-=i;
+   break;
+  }
+  a-=i;
+  input=realloc(a,strlen(a)+2);
+  if(input!=NULL)
+  {
+   a=input;
+  }
+  i++;
+  a+=i;
+}
+  match(input);
+
+}
+
+void match(char* input)
+{
+printf("input length is %lu\n",strlen(input));
+char *pattern=calloc(strlen(input),sizeof(char));
+char *copy=malloc(strlen(input)*sizeof(char));
+pattern[0]=input[0];
+strcpy(copy,input);
+int count=0;
+int length=strlen(copy);
+char *tail,*first, *last;
+int J=0;
+tail=copy+(strlen(input)-1);
+char temp=tail[0];
+while(length){
+	copy++;
+	for(int z=J+1;z<length;z++)
+		{
+			pattern[z]=copy[0];
+			if(pattern[z]==temp)
+			{
+			J=z;
+			break;		
+			}
+			copy++;
+		}
+	if(strcmp((tail-(J)),pattern)==0)
+	{	
+		count=1;
+		first=input+strlen(pattern);
+		last=input+(strlen(input)-strlen(pattern));
+		printf("A= %s\n",last);
+		*last='\0';
+		printf("B= %s\n",first);
+		break;
+	}
+	length--;
+		
+	
+}
+if(count==0)
+{
+	printf("No pattern found\n");
+}
+
+}
