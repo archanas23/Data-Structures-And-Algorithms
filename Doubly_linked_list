@@ -15,6 +15,13 @@ typedef struct root{
 	struct node *head;
 	struct node *tail;
 	}Root;
+typedef struct bst{
+
+	int data;
+	struct bst *left;
+	struct bst *right;
+	}Bst;
+
 
 Node* makenode(int data)
 {
@@ -39,6 +46,17 @@ Root * makeroot(void)
 	temp->tail=NULL;}
 }
 
+Bst * makebst(int data)
+{
+	Bst *temp;
+	temp=New(Bst);
+	if(temp!=NULL){
+	temp->data=data;
+	temp->left=NULL;
+	temp->right=NULL;}
+}
+
+
 void display(Root* r)
 {
 	Node *temp;
@@ -52,6 +70,16 @@ void display(Root* r)
 	}
 	
 }
+}
+
+void display_bst(Bst* r)
+{
+	if(r!=NULL)
+	{
+		display_bst(r->right);
+		printf("data in the bst is %d\n",r->data);
+		display_bst(r->left);
+	}
 }
 
 int insert_at_head(Root *this,int data)
@@ -256,6 +284,41 @@ void split(Root *r,Root *start, Root *mid)
 	
 }
 
+Bst* insert(Bst *this, int data)
+{
+	if(this==NULL)
+	{
+		return makebst(data);
+	}
+	if(data<=(this->data))
+	{
+		this->left=insert(this->left,data);
+	}
+	else if(data>this->data)
+	{
+	this->right=insert(this->right,data);
+	}
+}
+
+Bst* convertlist2bst(int data, Root *r)
+{
+	Bst* p=NULL;
+	int temp=data; 
+	p=insert(p,data);
+	Node *n=r->head;
+	while(n!=NULL)
+	{
+		if(n->data!=temp)
+		{
+		insert(p,n->data);
+		}
+	n=n->next;
+
+	}
+	display_bst(p);	
+}
+
+
 int main(void)
 	{
 		Node* n;
@@ -310,5 +373,13 @@ int main(void)
 		display(start);
 		printf("\n");
 		display(mid);
+		n=r->head;
+		while(i!=(r->num/2))
+		{
+		
+			n=n->next;
+		i++;
+		}
+		convertlist2bst(n->data,r);
 	return 0;
 	}
